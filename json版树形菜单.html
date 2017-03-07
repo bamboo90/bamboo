@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+	<head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+                <title></title>
+        <style>
+                li{
+                    list-style: none;
+                }
+                #oUl ul{
+                    display: none;
+                }
+                
+            </style>
+        
+        </head>
+
+<body>
+	<ul id="oUl"></ul>
+</body>
+<script>
+var arr = [
+{
+    title : "第一级菜单",
+    child : [
+    	{title:"第二集菜单"},
+        {title:"第二集菜单",
+        child:[
+        		{title:"第三集菜单"},
+        		{title:"第三集菜单",
+        		child:[
+        			{title:"第四集菜单"},
+        			{title:"第四集菜单"},
+        			{title:"第四集菜单"}
+        		]
+        		},
+        		{title:"第三集菜单"}
+        	]
+    	},
+        {
+        	title:"第二集菜单",
+        	child:[
+        		{title:"第三集菜单"},
+        		{title:"第三集菜单"}
+        	]
+        }
+    ]
+},
+{
+    title : "第一级菜单",
+    child : [
+    	{title:"第二集菜单"},
+        {title:"第二集菜单",
+        child:[
+        		{title:"第三集菜单"},
+        		{title:"第三集菜单",
+        		child:[
+        			{title:"第四集菜单"},
+        			{title:"第四集菜单"},
+        			{title:"第四集菜单"}
+        		]
+        		},
+        		{title:"第三集菜单"}
+        	]
+    	},
+        {
+        	title:"第二集菜单",
+        	child:[
+        		{title:"第三集菜单"},
+        		{title:"第三集菜单"}
+        	]
+        }
+    ]
+},
+{
+	title:"第一集菜单",
+	child:[
+		{title:"第二集菜单"},
+		{title:"第二集菜单"}
+	]
+},
+];
+var oUl = document.getElementById('oUl');
+var str ="";
+node(arr);
+function node(arr){
+    //遍历数组，写出li
+    for(var i=0;i<arr.length;i++){
+        str +='<li>';
+        //遍历对象
+            for(var k in arr[i]){
+                if(k=='title'){
+                    str +='<h2>'+arr[i][k]+'</h2>'
+                }else if(k=='child'){
+                    if(arr[i].child){
+                        str +='<ul>'
+                            node(arr[i].child)
+                        str +='</ul>'    
+                    }
+                }
+            }
+        str+='</li>'
+    }
+}
+oUl.innerHTML = str;
+var lis = document.getElementsByTagName('li');
+var h2s = document.getElementsByTagName('h2');
+for(var i=0;i<lis.length;i++){
+    //给每个h2标签添加自定义属性
+    h2s[i].onOff = true;
+    h2s[i].onclick = function(){
+        //h2下面的兄弟节点
+        var next = this.nextElementSibling;
+        //有next的时候，才执行展开收缩的功能
+       if(next){
+           if(this.onOff){
+               next.style.display ='block';
+               this.onOff = false;
+           }else{
+            //h2的父集下面所有的ul
+            var uls = this.parentNode.getElementsByTagName('ul');
+                for(var j=0;j<uls.length;j++){
+                    uls[j].style.display ='';
+                    uls[j].previousElementSibling.onOff = true;                   
+                }
+            this.onOff = true;
+           }
+       }
+    }
+}
+</script>
+</html>
